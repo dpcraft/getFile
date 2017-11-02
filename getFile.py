@@ -40,8 +40,12 @@ def get_mails(prefix):
     password = 'password'
 
     server = poplib.POP3(host)
-    server.user(username)
-    server.pass_(password)
+    try:
+        server.user(username)
+        server.pass_(password)
+    except poplib.error_proto,e:
+        print "Login filed:" + e.message
+        sys.exit(1)
 
     warn = lambda app: showwarning(app,"完成?")
     app = 'Excel'
@@ -59,7 +63,7 @@ def get_mails(prefix):
     print("===="*10)
     messages = messages[::-1]
     rownum = 1
-    mailNO = 0;
+    mailNO = 0
     for message in messages:
         subject = message.get('Subject')
         subject = decode_str(subject)
@@ -107,5 +111,5 @@ def get_mails(prefix):
 if __name__ == '__main__':
     Tk().withdraw()
     prefix = str("实验一")
-    folder = str("实验一")
+    folder = str("实验一tao")
     get_mails(prefix)
